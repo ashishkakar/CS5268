@@ -1,2 +1,2 @@
-# CS5268
-CS5268 files: Artificial Intelligence A Modern Approach
+# CS5368
+CS5368 files: Artificial Intelligence A Modern Approach
