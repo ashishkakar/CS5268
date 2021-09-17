@@ -18,13 +18,57 @@ class DFS(object):
         print "Start's successors:", problem.getSuccessors(problem.getStartState())
         """
         "*** TTU CS3568 YOUR CODE HERE ***"
-      
+
+        from game import Directions
+
+        if problem.isGoalState(problem.getStartState()):
+            return []
+        closed = {}
+        successors = problem.getSuccessors(problem.getStartState())
+        fringe = util.Stack()
+        fringe.push(successors)
+        while not fringe.isEmpty():
+            nodes = fringe.pop()
+            if len(nodes)==0:
+                continue
+            node = nodes.pop()
+            if node in closed:
+                fringe.push(nodes)
+                continue
+            closed[node] = node
+            (position, direction, cost) = node
+            if problem.isGoalState(position):
+                directions = util.Stack()
+                directions.push(direction)
+                while not fringe.isEmpty():
+                    nodes = fringe.pop()
+                    node = nodes.pop()
+                    (position, direction, cost) = node
+                    directions.push(direction)
+                path = []
+                while not directions.isEmpty():
+                    direction = directions.pop()
+                    if direction=='South':
+                        path.append(Directions.SOUTH)
+                    elif direction=='West':
+                        path.append(Directions.WEST)
+                    elif direction=='North':
+                        path.append(Directions.NORTH)
+                    elif direction=='East':
+                        path.append(Directions.EAST)
+                return path
+            successors = problem.getSuccessors(position)
+            nodes.append(node)
+            fringe.push(nodes)
+            fringe.push(successors)
+
+
         util.raiseNotDefined()
 
 class BFS(object):
     def breadthFirstSearch(self, problem):
         "*** TTU CS3568 YOUR CODE HERE ***"
-        
+
         util.raiseNotDefined()
 
 class UCS(object):
@@ -32,7 +76,7 @@ class UCS(object):
         "*** TTU CS3568 YOUR CODE HERE ***"
 
         util.raiseNotDefined()
-        
+
 class aSearch (object):
     def nullHeuristic( state, problem=None):
         """
@@ -42,6 +86,5 @@ class aSearch (object):
     def aStarSearch(self,problem, heuristic=nullHeuristic):
         "Search the node that has the lowest combined cost and heuristic first."
         "*** TTU CS3568 YOUR CODE HERE ***"
-        
-        util.raiseNotDefined()
 
+        util.raiseNotDefined()
