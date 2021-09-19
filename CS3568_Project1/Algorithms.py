@@ -23,7 +23,7 @@ class DFS(object):
 
         if problem.isGoalState(problem.getStartState()):
             return []
-        closed = {}
+        closed = {problem.getStartState():(problem.getStartState(), '', 0)}
         successors = problem.getSuccessors(problem.getStartState())
         fringe = util.Stack()
         fringe.push(successors)
@@ -32,11 +32,12 @@ class DFS(object):
             if len(nodes)==0:
                 continue
             node = nodes.pop()
-            if node in closed:
+            (position, direction, cost) = node
+            if position in closed:
                 fringe.push(nodes)
                 continue
-            closed[node] = node
-            (position, direction, cost) = node
+
+            closed[position] = node
             if problem.isGoalState(position):
                 directions = util.Stack()
                 directions.push(direction)
