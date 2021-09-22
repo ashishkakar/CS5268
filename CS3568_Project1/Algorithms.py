@@ -79,14 +79,16 @@ class DFS(object):
                 #as long as directions is not empty, put the directions into path in the reverse order
                 while not directions.isEmpty():
                     direction = directions.pop()
-                    if direction=='South':
-                        path.append(Directions.SOUTH)
-                    elif direction=='West':
-                        path.append(Directions.WEST)
-                    elif direction=='North':
-                        path.append(Directions.NORTH)
-                    elif direction=='East':
-                        path.append(Directions.EAST)
+                    #if direction=='South':
+                        #path.append(Directions.SOUTH)
+                    #elif direction=='West':
+                        #path.append(Directions.WEST)
+                    #elif direction=='North':
+                        #path.append(Directions.NORTH)
+                    #elif direction=='East':
+                        #path.append(Directions.EAST)
+                    if direction!='':
+                        path.append(direction)
 
                 #return result
                 return path
@@ -110,10 +112,6 @@ class BFS(object):
         "*** TTU CS3568 YOUR CODE HERE ***"
 
         from game import Directions
-
-        #Trivial case: if start state=goal state then return empty
-        if problem.isGoalState(problem.getStartState()):
-            return []
 
         #Add start state to closed set
         closed = {problem.getStartState():(problem.getStartState(), '', 0)}
@@ -142,8 +140,19 @@ class BFS(object):
 
             #separate out position, direction and cost of the node
             (position, direction, cost) = node
+            if problem.isGoalState(position):
+                path = []
+                n = nodes.pop(0)
+                while nodes:
+                    n = nodes.pop(0)
+                    (position, direction, cost) = n
+                    path.append(direction)
+                (position, direction, cost) = node
+                path.append(direction)
+                return path
 
             successors = problem.getSuccessors(position)
+            #closed[position] = node
 
             #if node is already in closed set, put the final layer back on fringe and continue with remaining nodes
             #if position in closed:
@@ -159,20 +168,6 @@ class BFS(object):
                 n.append(s)
                 fringe.push(n)
                 closed[position] = s
-                if problem.isGoalState(position):
-                    path = []
-                    while n:
-                        node = n.pop(0)
-                        (position, direction, cost) = node
-                        if direction=='South':
-                            path.append(Directions.SOUTH)
-                        elif direction=='West':
-                            path.append(Directions.WEST)
-                        elif direction=='North':
-                            path.append(Directions.NORTH)
-                        elif direction=='East':
-                            path.append(Directions.EAST)
-                    return path
 
 
             #if node is not in closed set, add it to the closed set
