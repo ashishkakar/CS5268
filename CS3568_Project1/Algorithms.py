@@ -110,7 +110,8 @@ class BFS(object):
         "*** TTU CS3568 YOUR CODE HERE ***"
 
         #Add start state to closed set
-        closed = {problem.getStartState():(problem.getStartState(), '', 0)}
+        #closed = {problem.getStartState():(problem.getStartState(), '', 0)}
+        closed = {}
 
         #get successors of start state
         #successors = problem.getSuccessors(problem.getStartState())
@@ -147,7 +148,11 @@ class BFS(object):
                 path.append(direction)
                 return path
 
-            successors = problem.getSuccessors(position)
+            successors = []
+
+            if position not in closed:
+                successors = problem.getSuccessors(position)
+                closed[position] = node
             #closed[position] = node
 
             #if node is already in closed set, put the final layer back on fringe and continue with remaining nodes
@@ -157,13 +162,10 @@ class BFS(object):
 
             for s in successors:
                 (position, direction, cost) = s
-                if position in closed:
-                    continue
                 n = nodes[:]
                 n.append(node)
                 n.append(s)
                 fringe.push(n)
-                closed[position] = s
 
 
             #if node is not in closed set, add it to the closed set
@@ -218,7 +220,8 @@ class UCS(object):
         "*** TTU CS3568 YOUR CODE HERE ***"
 
         #Add start state to closed set
-        closed = {problem.getStartState():(problem.getStartState(), '', 0)}
+        #closed = {problem.getStartState():(problem.getStartState(), '', 0)}
+        closed = {}
 
         #get successors of start state
         #successors = problem.getSuccessors(problem.getStartState())
@@ -260,8 +263,12 @@ class UCS(object):
                 path.append(direction)
                 return path
 
-            successors = problem.getSuccessors(position)
-            print("Successors: ", successors)
+            successors = []
+
+            if position not in closed:
+                successors = problem.getSuccessors(position)
+                closed[position] = node
+                print("Successors: ", successors)
             #closed[position] = node
 
             #if node is already in closed set, put the final layer back on fringe and continue with remaining nodes
@@ -271,9 +278,6 @@ class UCS(object):
 
             for s in successors:
                 (position, direction, cost) = s
-                if position in closed:
-                    continue
-                closed[position] = s
                 n = nodes[:]
                 n.append(node)
                 n.append(s)
