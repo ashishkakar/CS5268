@@ -78,21 +78,33 @@ class ReflexAgent(Agent):
 
         "*** CS3568 YOUR CODE HERE ***"
         "Decribe your function: ghost penalty is 3^(16-4d) where d is the distance to ghost. food reward is 1/d^4 where d is the distance from food."
+        
+        import math
 
         score = 0.0
-        for g in successorGameState.getGhostPositions():
-            gDistance = manhattanDistance(successorGameState.getPacmanPosition(),g)
-            score -= (3.0**(8.0-4.0*gDistance))
+        for g in currentGameState.getGhostStates():
+            gDistance = manhattanDistance(successorGameState.getPacmanPosition(),g.getPosition())
+            if g.scaredTimer<=1:
+                score -= (3.0**(2.0-gDistance))
+            else:
+                score += (3.0**(2.0-gDistance))
 
         #print(successorGameState.getFood().height, successorGameState.getFood().width)
+        nearest = math.inf
         for y in range(successorGameState.getFood().height):
             for x in range(successorGameState.getFood().width):
-                if successorGameState.getFood()[x][y]:
-                    score += 1.0/(manhattanDistance(successorGameState.getPacmanPosition(),(x,y))**4.0)
+                if currentGameState.getFood()[x][y]:
+                    #score += 1.0/(manhattanDistance(successorGameState.getPacmanPosition(),(x,y))**4.0)
+                    #print("Food: ", (x,y))
+                    if manhattanDistance(successorGameState.getPacmanPosition(),(x,y)) < nearest:
+                        nearest = manhattanDistance(successorGameState.getPacmanPosition(),(x,y))
+        score += 1.0/(nearest+0.5)
+        #print("Pacman: ", successorGameState.getPacmanPosition())
 
         #return -manhattanDistance(successorGameState.getPacmanPosition(),(2,1))
+        #print(successorGameState.getGhostStates()[0].getPosition())
 
-        return round(score)
+        return score
 
         return successorGameState.getScore()
 
